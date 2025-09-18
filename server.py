@@ -14,15 +14,20 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
 
     with client_connection:
         while True:
-            command = input('Введите команду:\n')
+            command = input('\nВведите команду:\n')
+
             if command.lower() == 'exit':
+                print(Fore.BLUE + '[*] Завершение соединения' + Style.RESET_ALL)
                 break
+
+            if not command:
+                continue
 
             try:
                 output = command.encode('utf-8')
                 client_connection.sendall(output)
                 data_from_client = client_connection.recv(4096).decode('utf-8')
-                print(data_from_client)
+                print(Fore.GREEN + data_from_client + Style.RESET_ALL)
             except Exception as err:
                 print(Fore.RED + f"[!] Ошибка: {err}" + Style.RESET_ALL)
                 exit()

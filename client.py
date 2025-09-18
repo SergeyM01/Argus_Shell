@@ -11,6 +11,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
     while True:
         output = ''
         server_command = soc.recv(4096).decode('utf-8')
+
+        if not server_command:
+            break
+
         if server_command == 'exit':
             break
 
