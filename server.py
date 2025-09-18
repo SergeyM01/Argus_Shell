@@ -15,10 +15,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
     with client_connection:
         while True:
             command = input('Введите команду:\n')
-            if command == 'exit':
+            if command.lower() == 'exit':
                 break
 
-            output = command.encode('utf-8')
-            client_connection.sendall(output)
-            data_from_client = client_connection.recv(4096)
-            print(data_from_client.decode('utf-8'))
+            try:
+                output = command.encode('utf-8')
+                client_connection.sendall(output)
+                data_from_client = client_connection.recv(4096).decode('utf-8')
+                print(data_from_client)
+            except Exception as err:
+                print(f"[!] Ошибка: {err}")
