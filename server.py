@@ -1,8 +1,12 @@
 import socket
 from colorama import Fore, Style
+import shutil
 
 HOST = ''
 PORT = 8888
+
+width = shutil.get_terminal_size(fallback=(80, 20)).columns
+print('=' * width)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
     soc.bind((HOST, PORT))
@@ -17,7 +21,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
             command = input('\nВведите команду:\n')
 
             if command.lower() == 'exit':
-                print(Fore.BLUE + '[*] Завершение соединения' + Style.RESET_ALL)
+                print(Fore.GREEN + '[*] Завершение соединения' + Style.RESET_ALL)
                 break
 
             if not command:
