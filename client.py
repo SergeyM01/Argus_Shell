@@ -6,7 +6,9 @@ HOST = '192.168.56.1'
 PORT = 8888
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
+    print(f"[*] Пытаюсь подключиться к {HOST}:{PORT} ...")
     soc.connect((HOST, PORT))
+    print("[+] Соединение установлено")
     
     while True:
         output = ''
