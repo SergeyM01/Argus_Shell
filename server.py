@@ -1,11 +1,12 @@
 import socket
 from colorama import Fore, Style
 import shutil
+from platform import system
 
 HOST = ''
 PORT = 8888
 
-width = shutil.get_terminal_size(fallback=(80, 20)).columns
+width = shutil.get_terminal_size().columns
 print('=' * width)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
@@ -14,14 +15,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
     print(Fore.GREEN + "\n[+] Сервер ожидает входящего подключения..." + Style.RESET_ALL)
 
     client_connection, client_addr = soc.accept()
-    print(Fore.GREEN + f"[+] Установлено соединение с: {client_addr}" + Style.RESET_ALL)
+    print(Fore.GREEN + f"[+] Установлено соединение с: {client_addr} ОС: {system()}" + Style.RESET_ALL)
 
     with client_connection:
         while True:
-            command = input('\nВведите команду:\n')
+            command = input(Style.BRIGHT + '\nВведите команду:\n> ' + Style.RESET_ALL)
 
             if command.lower() == 'exit':
-                print(Fore.GREEN + '[*] Завершение соединения' + Style.RESET_ALL)
+                print(Fore.GREEN + '[*] Завершение соединения\n' + Style.RESET_ALL)
                 break
 
             if not command:
@@ -31,7 +32,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
                 output = command.encode('utf-8')
                 client_connection.sendall(output)
                 data_from_client = client_connection.recv(4096).decode('utf-8')
-                print(Fore.GREEN + data_from_client + Style.RESET_ALL)
+                print(Fore.GREEN + '\n' + data_from_client.strip() + Style.RESET_ALL)
             except Exception as err:
                 print(Fore.RED + f"[!] Ошибка: {err}" + Style.RESET_ALL)
                 exit()
+
+print('=' * width)
