@@ -8,7 +8,7 @@ PORT = 8888
 
 width = shutil.get_terminal_size().columns
 print('=' * width)
-print(Style.BRIGHT + Fore.MAGENTA + "     A R G U S  S H E L L  S E R V E R 👁   v. 1.0\n".center(width) + Style.RESET_ALL)
+print(Style.BRIGHT + Fore.MAGENTA + "     A R G U S  S H E L L  S E R V E R  👁   v. 1.0\n".center(width) + Style.RESET_ALL)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
     soc.bind((HOST, PORT))
